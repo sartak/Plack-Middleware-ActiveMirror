@@ -4,10 +4,9 @@ use strict;
 use warnings;
 use parent 'Plack::Middleware';
 
-use Plack::Util::Accessor qw( cache json vary always_fetch );
+use Plack::Util::Accessor qw( cache vary always_fetch );
 
 use Web::Request;
-use JSON ();
 
 sub prepare_app {
     my $self = shift;
@@ -20,23 +19,17 @@ sub prepare_app {
     unless ($self->vary) {
         $self->vary(['path', 'all_parameters', 'method']);
     }
-
-    unless ($self->json) {
-        $self->json(JSON->new->canonical);
-    }
 }
 
 sub key_from_env {
     my ($self, $env) = @_;
 
     my $req = Web::Request->new_from_env($env);
-    my %key_params = (
+    my %key = (
         map { $_ => $req->$_ } @{ $self->vary }
     );
 
-    my $key = $self->json->encode(\%key_params);
-
-    return $key;
+    return \%key;
 }
 
 sub call {
@@ -131,11 +124,7 @@ L<Plack::Middleware::ActiveMirror> relies on L<CHI> to manage its
 cache. This gives you enormous flexibility in how your responses
 are stored: in memory, on disk, in a database, whatever L<CHI>
 supports. This means that you must pass an instance of L<CHI> to
-get yourself going. (The only L<CHI> API that this module uses is
-C<< ->get($key) >> and C<< ->set($key, $value) >> so if you're
-sneaky you can provide any kind of cache object -- but! I explicitly
-do I<not> promise that this module will continue using only those
-two methods with those arguments in perpetuity).
+get yourself going.
 
 =head1 OPTIONS
 
@@ -158,13 +147,6 @@ point of this option (instead of just removing ActiveMirror) is to
 build up your cache for when you lose connectivity. So, by default,
 set C<always_fetch>, but then when you go offline, turn off
 C<always_fetch>.
-
-=head2 C<json>
-
-An instance of L<JSON> simply kept around to avoid having to
-initialize it every request. You can pass in your own L<JSON> object
-if you need different options for some reason; be sure to set
-C<canonical>!
 
 =head1 SEE ALSO
 
