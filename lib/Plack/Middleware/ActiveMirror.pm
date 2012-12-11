@@ -11,11 +11,18 @@ use JSON ();
 
 sub prepare_app {
     my $self = shift;
-    unless ($self->json) {
-        $self->json(JSON->new->canonical);
+
+    unless ($self->cache) {
+        require Carp;
+        Carp::confess("ActiveMirror requires a `cache`");
     }
+
     unless ($self->vary) {
         $self->vary(['path', 'all_parameters', 'method']);
+    }
+
+    unless ($self->json) {
+        $self->json(JSON->new->canonical);
     }
 }
 
