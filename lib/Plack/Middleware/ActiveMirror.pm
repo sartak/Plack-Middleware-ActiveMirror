@@ -158,5 +158,21 @@ An instance of L<JSON> just kept around to avoid having to initialize
 it every request. You can pass in your own L<JSON> object if you
 need different options; be sure to set C<canonical>!
 
+=head1 SEE ALSO
+
+L<Plack::Middleware::Cache>
+
+=head1 AUTHOR
+
+Shawn M Moore - C<code@sartak.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2012 by Infinity Interactive.
+
+This is free software; you can redistribute it and/or modify it
+under the same terms as the Perl 5 programming language system
+itself.
+
 =cut
 
