@@ -111,5 +111,52 @@ just fine, but once you add query parameters into the mix, things
 start to go south. I needed a bit more control in what was cached,
 and how. Hence L<Plack::Middleware::ActiveMirror>.
 
+I also wanted to make sure that in the normal case of perfect
+connectivity, my application would behave normally: every request
+would proxy to my web services as usual. There would be an additional
+side effect of every response being put into a cache, effectively
+generating a partial, static mirror of your web services. Then,
+when connectivity goes down the drain, I can flip a switch and now
+ActiveMirror can serve responses out of cache on behalf of the
+now-inaccessible web services.
+
+=head1 SETUP
+
+L<Plack::Middleware::ActiveMirror> relies on L<CHI> to do the
+caching. This gives you enormous flexibility in how your responses
+are stored, whether in memory, on disk, in a database, whatever.
+This means that you must pass an instance of L<CHI> to get yourself
+going. (The only L<CHI> API that this module uses is C<< ->get($key)
+>> and C<< ->set($key, $value) >> so if you're sneaky you can provide
+any kind of cache object -- but! I explicitly do I<not> promise that
+this module will continue using only those two methods in the future).
+
+Other than that, you should be good to go!
+
+=head1 OPTIONS
+
+=head2 C<cache>
+
+An initialized L<CHI> object that will hold your cached responses.
+
+=head2 C<vary>
+
+An array reference containing the methods to call on L<Web::Request>
+to build a cache key. By default, we vary the cache key by C<path>,
+C<method> (GET, POST, etc), and C<all_parameters>.
+
+=head2 C<always_fetch>
+
+If set to a true value, then ActiveMirror will not serve any requests
+out of cache. The request will always be serviced by upstream. The
+point of this option (instead of just removing) ActiveMirror is to
+build up your cache for when you lose connectivity.
+
+=head2 C<json>
+
+An instance of L<JSON> just kept around to avoid having to initialize
+it every request. You can pass in your own L<JSON> object if you
+need different options; be sure to set C<canonical>!
+
 =cut
 
