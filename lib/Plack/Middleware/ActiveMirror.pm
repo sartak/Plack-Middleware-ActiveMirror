@@ -70,7 +70,7 @@ __END__
 
 =head1 NAME
 
-Plack::Middleware::ActiveMirror - mirror parts of your app for offline hacking
+Plack::Middleware::ActiveMirror - mirror parts of your app e.g. for offline hacking
 
 =head1 DESCRIPTION
 
