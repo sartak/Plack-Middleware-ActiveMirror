@@ -15,7 +15,7 @@ sub prepare_app {
         $self->json(JSON->new->canonical);
     }
     unless ($self->vary) {
-        $self->vary(['path', 'all_parameters']);
+        $self->vary(['path', 'all_parameters', 'method']);
     }
 }
 
