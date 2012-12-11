@@ -1,5 +1,5 @@
 package Plack::Middleware::ActiveMirror;
-#ABSTRACT: mirror parts of your app e.g. for offline hacking
+#ABSTRACT: cache parts of your app e.g. for offline hacking
 use strict;
 use warnings;
 use parent 'Plack::Middleware';
