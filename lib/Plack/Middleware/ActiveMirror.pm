@@ -65,3 +65,36 @@ sub call {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+Plack::Middleware::ActiveMirror - mirror parts of your app for offline hacking
+
+=head1 DESCRIPTION
+
+Hi, CPAN. My name is Shawn. I have a connectivity problem.
+
+We have beautifully-designed Web Services (implemented by handsome
+fellows!) for our C<$client> project, but we don't always have
+connectivity to them. I like to hack from cafés with crappy internet,
+which means lots of pain just to load a page since each page has
+to make multiple requests to our web services.
+
+So I got to thinking, why not cache the web services responses?  As
+long as the responses form a reasonably current snapshot, it should
+work fine. Sure, I can't expect to do everything my app supports
+just with these cached responses, but at least my JavaScript loads,
+and that lets me limp along well enough to continue generating
+billable hours.
+
+I tried using off-the-shelf tools first, like the wonderful Charles
+Proxy (L<http://www.charlesproxy.com/>) and other Plack middleware,
+but none of them quite met my needs. They can mirror sets of paths
+just fine, but once you add query parameters into the mix, things
+start to go south. I needed a bit more control in what was cached,
+and how. Hence L<Plack::Middleware::ActiveMirror>.
+
+=cut
+
