@@ -72,6 +72,21 @@ __END__
 
 Plack::Middleware::ActiveMirror - mirror parts of your app e.g. for offline hacking
 
+=head1 SYNOPSIS
+
+    enable_if { $_[0]->{PATH_INFO} =~ m{^/-/} }
+        ActiveMirror => (
+            cache => CHI->new(
+                driver    => 'RawMemory',
+                datastore => {},
+            ),
+        );
+
+    mount '/-/' => 'Plack::App::Proxy' => (
+        remote  => 'http://rest.example.com',
+        backend => 'LWP',
+    );
+
 =head1 DESCRIPTION
 
 Hi, CPAN. My name is Shawn. I have a connectivity problem.
